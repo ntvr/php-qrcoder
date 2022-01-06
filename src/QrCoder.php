@@ -15,13 +15,13 @@ class QrCoder {
 
 
 	/** Level L, ~7% correction. */
-	const EC_LEVEL_L = BaconQrECLevel::L;
+	const EC_LEVEL_L = 0x01;
 	/** Level M, ~15% correction. */
-	const EC_LEVEL_M = BaconQrECLevel::M;
+	const EC_LEVEL_M = 0x00;
 	/** Level Q, ~25% correction. */
-	const EC_LEVEL_Q = BaconQrECLevel::Q;
+	const EC_LEVEL_Q = 0x03;
 	/** Level H, ~30% correction. */
-	const EC_LEVEL_H = BaconQrECLevel::H;
+	const EC_LEVEL_H = 0x02;
 
 
 	/** @var int */
@@ -49,7 +49,7 @@ class QrCoder {
 			$ecLevel = $this->defaultEcLevel;
 		}
 		try {
-			$qrCode = BaconQrEncoder::encode($data, new BaconQrECLevel($ecLevel, TRUE));
+			$qrCode = BaconQrEncoder::encode($data, BaconQrECLevel::forBits($ecLevel));
 			return new MatrixAdapter($qrCode->getMatrix());
 		} catch (\Exception $ex) {
 			throw new QrCoderException("Error encoding data: " . $ex->getMessage(), 0, $ex);
